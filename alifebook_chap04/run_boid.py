@@ -34,6 +34,7 @@ class Boid:
     def init_values(self):
         # 位置と速度
         self.xs = np.random.rand(self.n_agent, 3) * 2 - 1
+        self.xs[:, 2] = self.xs[:, 2] - 1  # z座標を-1から0の範囲に設定
         self.vs = (np.random.rand(self.n_agent, 3) * 2 - 1) * self.min_vel
         # cohesion, separation, alignmentの３つの力を代入する変数
         self.dv_coh = np.zeros((self.n_agent, 3))
@@ -126,6 +127,7 @@ class Boid:
 
     def update_xs(self, vs):
         self.xs += vs
+        self.xs[:, 2] = np.clip(self.xs[:, 2], -1, 0)  # z座標を-1から0の範囲に制約
         return self.xs
 
     def run(self):

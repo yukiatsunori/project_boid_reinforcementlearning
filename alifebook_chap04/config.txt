@@ -1,0 +1,19 @@
+{
+    'n_hunter': 1,
+    'hunter_force': 0.01,
+    'hunter_n_closest': 3,
+    'escape_force': 0.02,
+    'n_agent': 100,
+    'min_vel': 0.005,
+    'max_vel': 0.03,
+    'boundary_force': 0.001,
+    'cohesion_force': 0.008,
+    'cohesion_distance': 0.5,
+    'cohesion_angle': 1.5708,  # π/2
+    'separation_force': 0.4,
+    'separation_distance': 0.05,
+    'separation_angle': 1.5708,  # π/2
+    'alignment_force': 0.06,
+    'alignment_distance': 0.1,
+    'alignment_angle': 1.0472  # π/3
+}

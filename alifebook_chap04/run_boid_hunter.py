@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 import sys
 import numpy as np
@@ -64,6 +62,7 @@ class BoidHunter(Boid):
             self.check_hunter_pos()
             visualizer.update(xs, vs)
             visualizer.set_markers(self.hunter_xs)
+            
             if t == 0:
                 time.sleep(self.sleep_time)
             t += 1
@@ -76,7 +75,10 @@ if __name__ == '__main__':
     parser.add_argument('--update_ratio', type=float, default=1.0, help='update agent ratio (0 ~ 1)')
     args = parser.parse_args()
 
-    # print(args.conf, args.asynch)
-    dic_pars = eval(open(args.conf).read())
-    boid = BoidHunter(args.update_ratio, args.sleep_time, **dic_pars)
-    boid.run()
+    if args.conf:
+        with open(args.conf, 'r') as f:
+            dic_pars = eval(f.read())
+        boid = BoidHunter(args.update_ratio, args.sleep_time, **dic_pars)
+        boid.run()
+    else:
+        print("Error: Please provide a configuration file using the --conf argument.")

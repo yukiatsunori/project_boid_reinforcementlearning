@@ -5,21 +5,24 @@ from vispy.scene import visuals
 
 class SwarmVisualizer(object):
     """docstring for SwarmVisualizer."""
-    ARROW_SIZE = 20
-
-    def __init__(self, width=600, height=600):
+    ARROW_SIZE = 100
+    def __init__(self, width=1200, height=1200):
         self._canvas = SceneCanvas(size=(width, height), position=(0,0), keys='interactive', title="ALife book "+self.__class__.__name__)
         self._view = self._canvas.central_widget.add_view()
         #self._view.camera = 'arcball'
         self._view.camera = 'turntable'
+        self._view.camera.fov = 60  # 視野角を広げる
+        self._view.camera.distance = 10  # カメラの距離を設定することで引きの視点にする
         self._axis = visuals.XYZAxis(parent=self._view.scene)
+        #self._box = visuals.Box(width=10, height=10, depth=10, edge_color='white',color=(1, 1, 1, 0), parent=self._view.scene)  # ボックスの追加
         self._arrows = None
         self._markers = None
+        self._hunter_markers = None  # ハンターのマーカー用変数を追加
         self._canvas.show()
 
     def update(self, position, direction):
-        assert position.ndim is 2 and position.shape[1] in (2,3)
-        assert direction.ndim is 2 and direction.shape[1] in (2,3)
+        assert position.ndim == 2 and position.shape[1] in (2,3)
+        assert direction.ndim == 2 and direction.shape[1] in (2,3)
         assert position.shape[0] == direction.shape[0]
         if self._arrows is None:
             self._arrows = visuals.Arrow(arrow_size=self.ARROW_SIZE, arrow_type='triangle_30', parent=self._view.scene)
@@ -32,7 +35,7 @@ class SwarmVisualizer(object):
         vispy.app.process_events()
 
     def set_markers(self, position):
-        assert position.ndim is 2 and position.shape[-1] in (2,3)
+        assert position.ndim == 2 and position.shape[-1] in (2,3)
         if self._markers is None:
             self._markers = visuals.Markers(parent=self._view.scene)
         self._markers.set_data(position, face_color=(1,0,0), size=20)
